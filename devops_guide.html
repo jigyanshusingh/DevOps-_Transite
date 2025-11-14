@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Transition Guide - Networking to DevOps in 6-10 Months</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --sidebar-bg: #1e293b;
+            --sidebar-text: #f1f5f9;
+            --header-bg: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --secondary-color: #34d399;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --sidebar-bg: #020617;
+            --sidebar-text: #f1f5f9;
+            --header-bg: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-slider {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        [data-theme="dark"] .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+
+        .nav-item {
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item-icon {
+            font-size: 1.2em;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            transition: margin-left 0.3s;
+        }
+
+        header {
+            background: var(--header-bg);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .progress-container {
+            max-width: 800px;
+            margin: 20px auto 0;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: var(--secondary-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .module-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .module-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .module-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--header-bg);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            flex-shrink: 0;
+        }
+
+        .module-info h2 {
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .module-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge.success {
+            background: var(--secondary-color);
+        }
+
+        .card ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .card li {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .card li strong {
+            color: var(--text-primary);
+        }
+
+        .checkpoint {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .checkpoint h4 {
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-marker {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h5 {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        .resources {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .resource-btn {
+            padding: 14px 28px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .resource-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .completion-tracker {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .completion-tracker h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .completion-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .completion-item:hover {
+            background: var(--bg-color);
+        }
+
+        .completion-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--secondary-color);
+        }
+
+        .completion-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        footer {
+            background: var(--card-bg);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        footer h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            .module-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .module-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2em;
+            }
+
+            .resources {
+                flex-direction: column;
+            }
+
+            .resource-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>🚀 DevOps Guide</h2>
+                <p>6-10 Month Learning Path</p>
+            </div>
+
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <span>🌙</span>
+                <div class="toggle-switch">
+                    <div class="toggle-slider"></div>
+                </div>
+                <span>☀️</span>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <h3>Foundation (Weeks 1-8)</h3>
+                    <div class="nav-item active" onclick="showModule(1)">
+                        <span class="nav-item-icon">🌐</span>
+                        <span>Networking Foundations</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(2)">
+                        <span class="nav-item-icon">🐧</span>
+                        <span>Linux Fundamentals</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(3)">
+                        <span class="nav-item-icon">💻</span>
+                        <span>Scripting (Bash/Python)</span>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Core Tools (Weeks 9-16)</h3>
+                    <div class="nav-item" onclick="showModule(4)">
+                        <span class="nav-item-icon">📦</span>
+                        <span>Git & GitHub</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(5)">
+                        <span class="nav-item-icon">🔄</span>
+                        <span>CI/CD & Jenkins</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(6)">
+                        <span class="nav-item-icon">🐳</span>
+                        <span>Docker Containers</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(7)">
+                        <span class="nav-item-icon">☸️</span>
+                        <span>Kubernetes</span>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Advanced (Weeks 17-24)</h3>
+                    <div class="nav-item" onclick="showModule(8)">
+                        <span class="nav-item-icon">🏗️</span>
+                        <span>Terraform (IaC)</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(9)">
+                        <span class="nav-item-icon">☁️</span>
+                        <span>Cloud Platforms</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(10)">
+                        <span class="nav-item-icon">⚙️</span>
+                        <span>Ansible</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(11)">
+                        <span class="nav-item-icon">📊</span>
+                        <span>Monitoring & Logging</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(12)">
+                        <span class="nav-item-icon">🔒</span>
+                        <span>DevSecOps</span>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Career Ready (Weeks 25-28)</h3>
+                    <div class="nav-item" onclick="showModule(13)">
+                        <span class="nav-item-icon">🚀</span>
+                        <span>Portfolio Projects</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(14)">
+                        <span class="nav-item-icon">💼</span>
+                        <span>Job Preparation</span>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <h1>DevOps Transition Guide</h1>
+                <p>From Networking Professional to DevOps Engineer in 6-10 Months</p>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0% Complete</div>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- Module 1: Networking Foundations -->
+                <section class="module-section active" data-module="1">
+                    <div class="module-header">
+                        <div class="module-icon">🌐</div>
+                        <div class="module-info">
+                            <h2>Networking Foundations Refresher</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 2-3 weeks</span>
+                                <span class="meta-item">📚 Level: Foundation</span>
+                                <span class="meta-item">🎯 Prerequisites: Basic IT knowledge</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="completion-tracker">
+                        <h3>✅ Your Progress</h3>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="1">
+                            <label>Complete TCP/IP fundamentals review</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="2">
+                            <label>Master subnetting calculations (CIDR notation)</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="3">
+                            <label>Setup AWS VPC with subnets and security groups</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="4">
+                            <label>Complete hybrid network design exercise</label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>📚 Core Networking Concepts</h3>
+                        <ul>
+                            <li><strong>TCP/IP Stack:</strong> Deep dive into OSI vs TCP/IP models, packet encapsulation, headers analysis</li>
+                            <li><strong>Subnetting Mastery:</strong> CIDR notation, VLSM, IPv4 address planning, subnet calculations</li>
+                            <li><strong>DNS & DHCP:</strong> Name resolution process, DNS record types (A, AAAA, CNAME, MX, TXT), DHCP lease management</li>
+                            <li><strong>NAT & PAT:</strong> Network Address Translation, Port Address Translation, NAT types (static, dynamic, PAT)</li>
+                            <li><strong>VLANs & Switching:</strong> Virtual LANs, 802.1Q tagging, trunk ports, inter-VLAN routing</li>
+                            <li><strong>Routing Protocols:</strong> Static routing, RIP, EIGRP, OSPF concepts, BGP basics for cloud</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3>☁️ Cloud Networking Bridge <span class="badge success">Critical for DevOps</span></h3>
+                        <ul>
+                            <li><strong>VPC Fundamentals:</strong> AWS VPC, Azure VNet, GCP VPC - understand how traditional networks map to cloud</li>
+                            <li><strong>Subnets & Routing:</strong> Public vs private subnets, route tables, internet gateways, NAT gateways</li>
+                            <li><strong>Security Groups & NACLs:</strong> Stateful vs stateless firewalls, inbound/outbound rules</li>
+                            <li><strong>Load Balancers:</strong> Layer 4 vs Layer 7, Application Load Balancer (ALB), Network Load Balancer (NLB)</li>
+                            <li><strong>VPN & Direct Connect:</strong> Site-to-site VPN, AWS Direct Connect, Azure ExpressRoute, hybrid connectivity</li>
+                            <li><strong>DNS in Cloud:</strong> Route 53, Azure DNS, Cloud DNS - routing policies, health checks</li>
+                        </ul>
+
+                        <div class="checkpoint">
+                            <h4>✅ Checkpoint Exercise</h4>
+                            <p><strong>Hybrid Network Design Project:</strong></p>
+                            <p>Design and document a complete hybrid cloud network architecture:</p>
+                            <ul style="margin-top: 10px;">
+                                <li>Create AWS VPC with public/private subnets across 2 AZs</li>
+                                <li>Configure security groups for web, app, and database tiers</li>
+                                <li>Setup NAT gateway for private subnet internet access</li>
+                                <li>Design VPN connection to simulate on-premises network</li>
+                                <li>Document IP addressing scheme and routing tables</li>
+                                <li>Draw network diagram using draw.io or Lucidchart</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>📅 Weekly Learning Timeline</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-marker">W1</div>
+                                <div class="timeline-content">
+                                    <h5>Week 1: TCP/IP & Subnetting Deep Dive</h5>
+                                    <p>Review OSI model layers, practice subnetting with online calculators, setup GNS3 or Packet Tracer for labs, complete 50+ subnetting exercises</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker">W2</div>
+                                <div class="timeline-content">
+                                    <h5>Week 2: DNS, NAT, VLANs Configuration</h5>
+                                    <p>Configure DNS servers, implement NAT/PAT on routers, create VLAN scenarios, practice inter-VLAN routing, troubleshoot connectivity issues</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker">W3</div>
+                                <div class="timeline-content">
+                                    <h5>Week 3: Cloud Networking Hands-on</h5>
+                                    <p>Create AWS free tier account, build VPC from scratch, configure security groups and NACLs, deploy EC2 instances in public/private subnets, setup load balancer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <button class="resource-btn" onclick="openResource('https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html')">
+                            📖 TCP/IP Deep Dive Guide
+                        </button>
+                        <button class="resource-btn" onclick="openResource('https://www.subnet-calculator.com/')">
+                            🔢 Subnetting Practice Tool
+                        </button>
+                        <button class="resource-btn" onclick="openResource('https://aws.amazon.com/vpc/getting-started/')">
+                            ☁️ AWS VPC Tutorial
+                        </button>
+                        <button class="resource-btn" onclick="openResource('https://www.gns3.com/')">
+                            🧪 GNS3 Network Simulator
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Module 2: Linux Fundamentals -->
+                <section class="module-section" data-module="2">
+                    <div class="module-header">
+                        <div class="module-icon">🐧</div>
+                        <div class="module-info">
+                            <h2>Linux Fundamentals</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 3-4 weeks</span>
+                                <span class="meta-item">📚 Level: Essential</span>
+                                <span class="meta-item">🎯 Daily Practice Required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="completion-tracker">
+                        <h3>✅ Your Progress</h3>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="1">
+                            <label>Master 50+ essential Linux commands</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="2">
+                            <label>Configure SSH key-based authentication</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="3">
+                            <label>Create and manage systemd services</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="4">
+                            <label>Complete web server deployment project</label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>🔧 Essential Linux Commands <span class="badge">Daily Use</span></h3>
+                        <ul>
+                            <li><strong>File Management:</strong> ls, cd, pwd, cp, mv, rm, mkdir, rmdir, touch, find, locate</li>
+                            <li><strong>Text Processing:</strong> cat, less, head, tail, grep, awk, sed, cut, sort, uniq, wc</li>
+                            <li><strong>Permissions:</strong> chmod, chown, chgrp, umask, ACLs (setfacl, getfacl), sudo configuration</li>
+                            <li><strong>Process Management:</strong> ps, top, htop, kill, killall, pkill, nice, renice, bg, fg, jobs</li>
+                            <li><strong>Networking:</strong> ip, ifconfig, netstat, ss, ping, traceroute, tcpdump, nc, curl, wget</li>
+                            <li><strong>Package Management:</strong> apt/apt-get (Debian/Ubuntu), yum/dnf (RHEL/CentOS), managing repositories</li>
+                            <li><strong>Archive & Compression:</strong> tar, gzip, bzip2, zip, unzip, rsync for backups</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3>⚙️ System Administration <span class="badge success">Critical Skills</span></h3>
+                        <ul>
+                            <li><strong>SSH Configuration:</strong> Key-based authentication, ssh-agent, config file (~/.ssh/config), tunneling, port forwarding</li>
+                            <li><strong>Systemd Services:</strong> Understanding unit files, systemctl commands (start, stop, enable, disable), creating custom services</li>
+                            <li><strong>Cron Jobs & Scheduling:</strong> Crontab syntax, scheduling tasks, anacron, systemd timers as alternative</li>
+                            <li><strong>Log Management:</strong> /var/log directory, syslog, journalctl commands, logrotate configuration</li>
+                            <li><strong>Storage Management:</strong> LVM (Logical Volume Manager), mounting filesystems, /etc/fstab, disk utilities (fdisk, parted, df, du)</li>
+                            <li><strong>User Management:</strong> useradd, usermod, userdel, group management, /etc/passwd, /etc/shadow</li>
+                        </ul>
+
+                        <div class="checkpoint">
+                            <h4>✅ Checkpoint Exercise</h4>
+                            <p><strong>Deploy Production Web Server:</strong></p>
+                            <ul style="margin-top: 10px;">
+                                <li>Install and configure Nginx or Apache web server</li>
+                                <li>Setup SSH key-based authentication (disable password auth)</li>
+                                <li>Create systemd service for a custom application</li>
+                                <li>Configure automated backup cron job to run daily</li>
+                                <li>Implement log rotation for application logs</li>
+                                <li>Setup firewall rules using ufw or iptables</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <button class="resource-btn" onclick="openResource('https://linuxjourney.com/')">
+                            📖 Linux Journey Tutorial
+                        </button>
+                        <button class="resource-btn" onclick="openResource('https://overthewire.org/wargames/bandit/')">
+                            🎮 Bandit Linux Challenge
+                        </button>
+                        <button class="resource-btn" onclick="openResource('https://www.digitalocean.com/community/tutorials')">
+                            🧪 DigitalOcean Tutorials
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Module 3: Scripting -->
+                <section class="module-section" data-module="3">
+                    <div class="module-header">
+                        <div class="module-icon">💻</div>
+                        <div class="module-info">
+                            <h2>Scripting Basics (Python + Bash)</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 4 weeks</span>
+                                <span class="meta-item">📚 Level: Foundation</span>
+                                <span class="meta-item">🎯 Automation Focus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="completion-tracker">
+                        <h3>✅ Your Progress</h3>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="3" data-task="1">
+                            <label>Complete 20+ Bash automation scripts</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="3" data-task="2">
+                            <label>Build Python scripts for API interactions</label>
+                        </div>
+                        <div class="completion-item">
+                            <input type="checkbox" class="completion-checkbox" data-module="3" data-task="3">
+                            <label>Create server health monitoring tool</label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>🐚 Bash Scripting Essentials</h3>
+                        <ul>
+                            <li><strong>Fundamentals:</strong> Variables, command substitution, exit codes, debugging with set -x</li>
+                            <li><strong>Control Structures:</strong> if/elif/else, case statements, for/while loops, break/continue</li>
+                            <li><strong>Functions:</strong> Creating reusable functions, parameters ($1, $2, $@), return values</li>
+                            <li><strong>Input/Output:</strong> Reading files, user input with read, redirections (>, >>, <, |)</li>
+                            <li><strong>Error Handling:</strong> Exit codes, trap command for cleanup, set -e for error exit</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3>🐍 Python for DevOps</h3>
+                        <ul>
+                            <li><strong>Python Basics:</strong> Data types, functions, classes, modules, virtual environments</li>
+                            <li><strong>Essential Libraries:</strong> os, sys, subprocess, argparse, logging, datetime</li>
+                            <li><strong>API Interactions:</strong> requests library, REST APIs, JSON handling, authentication</li>
+                            <li><strong>AWS SDK (boto3):</strong> Managing EC2, S3, Lambda, IAM programmatically</li>
+                            <li><strong>Configuration Files:</strong> YAML, JSON parsing, environment variables with python-dotenv</li>
+                        </ul>
+                    </div>
+
+                    <div class="resources">
+                        <button class="resource-btn" onclick="openResource('https://www.shellscript.sh/')">
+                            📖 Bash Scripting Guide
+                        </button>
+                        <button class="resource-btn" onclick="openResource('https://realpython.com/')">
+                            🐍 Real Python Tutorials
+                        </button>
+                        <button class="resource-btn" onclick="openResource('https://boto3.amazonaws.com/v1/documentation/api/latest/index.html')">
+                            ☁️ Boto3 Documentation
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Additional modules placeholder -->
+                <section class="module-section" data-module="4">
+                    <div class="module-header">
+                        <div class="module-icon">📦</div>
+                        <div class="module-info">
+                            <h2>Git & GitHub</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
+                                <span class="meta-item">📚 Level: Essential</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>📚 Version Control Fundamentals</h3>
+                        <p>Master Git workflows, branching strategies, pull requests, and GitHub Actions for CI/CD automation.</p>
+                        <div class="resources">
+                            <button class="resource-btn" onclick="openResource('https://git-scm.com/doc')">📖 Git Documentation</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="5">
+                    <div class="module-header">
+                        <div class="module-icon">🔄</div>
+                        <div class="module-info">
+                            <h2>CI/CD & Jenkins</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>🔄 Continuous Integration & Deployment</h3>
+                        <p>Learn Jenkins pipelines, automation principles, and integration with version control systems.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="6">
+                    <div class="module-header">
+                        <div class="module-icon">🐳</div>
+                        <div class="module-info">
+                            <h2>Docker Containers</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>🐳 Container Technology</h3>
+                        <p>Docker architecture, images, containers, Docker Compose, and containerizing applications.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="7">
+                    <div class="module-header">
+                        <div class="module-icon">☸️</div>
+                        <div class="module-info">
+                            <h2>Kubernetes Orchestration</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 4 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>☸️ Container Orchestration</h3>
+                        <p>Pods, Services, Deployments, kubectl, Minikube, and managed Kubernetes services.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="8">
+                    <div class="module-header">
+                        <div class="module-icon">🏗️</div>
+                        <div class="module-info">
+                            <h2>Terraform (Infrastructure as Code)</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>🏗️ Infrastructure Automation</h3>
+                        <p>Terraform fundamentals, providers, resources, state management, and multi-cloud deployments.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="9">
+                    <div class="module-header">
+                        <div class="module-icon">☁️</div>
+                        <div class="module-info">
+                            <h2>Cloud Platforms (AWS/Azure/GCP)</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 4 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>☁️ Cloud Services Mastery</h3>
+                        <p>AWS EC2, S3, IAM, VPC, Lambda, Azure and GCP equivalents, cloud-native architecture.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="10">
+                    <div class="module-header">
+                        <div class="module-icon">⚙️</div>
+                        <div class="module-info">
+                            <h2>Ansible Configuration Management</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>⚙️ Automation with Ansible</h3>
+                        <p>Playbooks, inventory files, roles, modules, and idempotent configuration management.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="11">
+                    <div class="module-header">
+                        <div class="module-icon">📊</div>
+                        <div class="module-info">
+                            <h2>Monitoring & Logging</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>📊 Observability Stack</h3>
+                        <p>Prometheus metrics, Grafana dashboards, ELK/EFK stack, alerting, and log aggregation.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="12">
+                    <div class="module-header">
+                        <div class="module-icon">🔒</div>
+                        <div class="module-info">
+                            <h2>DevSecOps & Security</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>🔒 Security Best Practices</h3>
+                        <p>Secrets management, vulnerability scanning, SAST/DAST, security in CI/CD pipelines.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="13">
+                    <div class="module-header">
+                        <div class="module-icon">🚀</div>
+                        <div class="module-info">
+                            <h2>Portfolio Projects</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>🚀 Build Your Portfolio</h3>
+                        <p>Deploy full-stack applications integrating all learned tools, document on GitHub with README.</p>
+                    </div>
+                </section>
+
+                <section class="module-section" data-module="14">
+                    <div class="module-header">
+                        <div class="module-icon">💼</div>
+                        <div class="module-info">
+                            <h2>Job Preparation & Resume</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>💼 Career Readiness</h3>
+                        <p>Resume optimization, LinkedIn profile, interview preparation, mock interviews, job search strategy.</p>
+                    </div>
+                </section>
+            </div>
+
+            <footer>
+                <h3>📧 Contact & Support</h3>
+                <p>Questions? Need guidance? Reach out to the DevOps community!</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">📚 Additional Resources</a>
+                    <a href="#" class="footer-link">💬 Join Discord Community</a>
+                    <a href="#" class="footer-link">🎓 Certification Paths</a>
+                    <a href="#" class="footer-link">📝 Blog & Updates</a>
+                </div>
+                <p style="margin-top: 20px; color: var(--text-secondary);">
+                    <strong>Pro Tip:</strong> Dedicate 2-3 hours daily. Consistency beats intensity. Build projects, not just tutorials.
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Sidebar toggle for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        // Module switching
+        function showModule(moduleId) {
+            // Hide all modules
+            document.querySelectorAll('.module-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected module
+            const targetModule = document.querySelector(`[data-module="${moduleId}"]`);
+            if (targetModule) {
+                targetModule.classList.add('active');
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item')[moduleId - 1].classList.add('active');
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 1024) {
+                toggleSidebar();
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Open resource links
+        function openResource(url) {
+            window.open(url, '_blank');
+        }
+
+        // Progress tracking
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.completion-checkbox');
+            const total = checkboxes.length;
+            const checked = document.querySelectorAll('.completion-checkbox:checked').length;
+            const percentage = total > 0 ? Math.round((checked / total) * 100) : 0;
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = percentage + '% Complete (' + checked + '/' + total + ' tasks)';
+        }
+
+        // Save/load checkbox state
+        document.querySelectorAll('.completion-checkbox').forEach(checkbox => {
+            const module = checkbox.getAttribute('data-module');
+            const task = checkbox.getAttribute('data-task');
+            const key = `devops-module-${module}-task-${task}`;
+            
+            // Load saved state
+            const saved = localStorage.getItem(key);
+            if (saved === 'true') {
+                checkbox.checked = true;
+            }
+            
+            // Save on change
+            checkbox.addEventListener('change', function() {
+                localStorage.setItem(key, this.checked);
+                updateProgress();
+            });
+        });
+
+        // Initialize progress
+        updateProgress();
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
