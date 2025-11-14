@@ -146,3 +146,18 @@ Feel free to update the repository URLs, license link, and contact info as neede
 [7](https://www.reddit.com/r/devops/comments/yid7cc/literal_devops_run_your_readmemd_like_a_notebook/)
 [8](https://www.atlassian.com/software/jira/templates/devops)
 [9](https://blogs.incyclesoftware.com/readme-files-for-internal-projects)
+
+
+Contribution
+Contributions (additional resources, corrections, content improvements, translations) are welcome!
+
+Please open an issue or submit a pull request with your suggested changes.
+
+For major changes, please discuss via issue first.
+
+License
+This project is open-source and free to use under the MIT License.
+
+Contact
+For questions, suggestions, or feedback, please start a discussion or email jigyanshu.singh.sisodiya@gmail.com.
+
