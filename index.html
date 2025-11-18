@@ -3,32 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Transition Guide - Networking to DevOps in 6-10 Months</title>
+    <title>DevOps Matrix - Your Path Through The Code</title>
     <style>
-        :root {
-            --primary-color: #3b82f6;
-            --secondary-color: #10b981;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
-            --sidebar-bg: #1e293b;
-            --sidebar-text: #f1f5f9;
-            --header-bg: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-        [data-theme="dark"] {
-            --primary-color: #60a5fa;
-            --secondary-color: #34d399;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
-            --sidebar-bg: #020617;
-            --sidebar-text: #f1f5f9;
-            --header-bg: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        :root {
+            --matrix-green: #00ff41;
+            --matrix-dark-green: #008f11;
+            --matrix-bg: #0d0208;
+            --matrix-card: #1a1a1a;
+            --matrix-border: #00ff41;
+            --matrix-text: #00ff41;
+            --matrix-dim: #006600;
+            --glow: 0 0 10px #00ff41, 0 0 20px #00ff41;
         }
 
         * {
@@ -38,85 +25,128 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-primary);
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--matrix-bg);
+            color: var(--matrix-text);
             line-height: 1.6;
-            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Matrix Rain Effect */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
         }
 
         .container {
+            position: relative;
+            z-index: 1;
             display: flex;
             min-height: 100vh;
         }
 
-        /* Sidebar Styles */
+        /* Sidebar */
         .sidebar {
-            width: 280px;
-            background: var(--sidebar-bg);
-            color: var(--sidebar-text);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.95);
+            border-right: 2px solid var(--matrix-border);
             padding: 20px;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            transition: transform 0.3s;
             z-index: 1000;
+            transition: transform 0.3s;
         }
 
-        .sidebar-header {
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--matrix-bg);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--matrix-dark-green);
+            border-radius: 4px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--matrix-border);
+        }
+
+        .logo h1 {
+            font-size: 1.5em;
+            text-shadow: var(--glow);
+            animation: glitch 3s infinite;
+        }
+
+        .logo p {
+            font-size: 0.8em;
+            color: var(--matrix-dim);
+            margin-top: 5px;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translateX(0); }
+            92% { transform: translateX(-2px); }
+            94% { transform: translateX(2px); }
+        }
+
+        .search-box {
+            position: relative;
             margin-bottom: 20px;
         }
 
-        .sidebar-header h2 {
-            font-size: 1.3em;
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            background: var(--matrix-card);
+            border: 1px solid var(--matrix-border);
+            color: var(--matrix-text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: var(--glow);
+        }
+
+        .search-filters {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--matrix-card);
+            border: 1px solid var(--matrix-dim);
+            border-radius: 4px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.8em;
             margin-bottom: 5px;
+            color: var(--matrix-dim);
         }
 
-        .sidebar-header p {
-            font-size: 0.85em;
-            opacity: 0.7;
-        }
-
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            margin: 15px 0;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .theme-toggle:hover {
-            background: rgba(255,255,255,0.15);
-        }
-
-        .toggle-switch {
-            width: 50px;
-            height: 26px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 13px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .toggle-slider {
-            width: 22px;
-            height: 22px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: transform 0.3s;
-        }
-
-        [data-theme="dark"] .toggle-slider {
-            transform: translateX(24px);
+        .filter-select {
+            width: 100%;
+            padding: 8px;
+            background: var(--matrix-bg);
+            border: 1px solid var(--matrix-border);
+            color: var(--matrix-text);
+            font-family: 'Share Tech Mono', monospace;
         }
 
         .nav-section {
@@ -126,33 +156,38 @@
         .nav-section h3 {
             font-size: 0.75em;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.6;
-            margin-bottom: 10px;
+            letter-spacing: 2px;
+            color: var(--matrix-dim);
+            margin-bottom: 15px;
+            padding-left: 5px;
         }
 
         .nav-item {
-            padding: 10px 15px;
+            padding: 12px 15px;
             margin: 5px 0;
-            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(0, 255, 65, 0.1);
+            border-left-color: var(--matrix-border);
+            transform: translateX(5px);
         }
 
         .nav-item.active {
-            background: var(--primary-color);
-            font-weight: 600;
+            background: rgba(0, 255, 65, 0.2);
+            border-left-color: var(--matrix-border);
+            box-shadow: var(--glow);
         }
 
-        .nav-item-icon {
-            font-size: 1.2em;
+        .nav-icon {
+            font-size: 1.5em;
+            filter: drop-shadow(0 0 5px var(--matrix-green));
         }
 
         .mobile-menu-btn {
@@ -161,69 +196,217 @@
             top: 20px;
             left: 20px;
             z-index: 1001;
-            background: var(--primary-color);
-            color: white;
-            border: none;
+            background: var(--matrix-card);
+            color: var(--matrix-text);
+            border: 2px solid var(--matrix-border);
             padding: 12px;
-            border-radius: 8px;
             cursor: pointer;
             font-size: 1.2em;
+            box-shadow: var(--glow);
         }
 
-        /* Main Content Styles */
+        /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 280px;
+            margin-left: 300px;
             transition: margin-left 0.3s;
         }
 
         header {
-            background: var(--header-bg);
-            color: white;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 2px solid var(--matrix-border);
             padding: 40px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 3em;
+            text-shadow: var(--glow);
+            position: relative;
+            z-index: 1;
         }
 
         header p {
             font-size: 1.2em;
-            opacity: 0.95;
+            margin-top: 10px;
+            color: var(--matrix-dim);
+            position: relative;
+            z-index: 1;
         }
 
         .progress-container {
             max-width: 800px;
-            margin: 20px auto 0;
+            margin: 30px auto 0;
+            position: relative;
+            z-index: 1;
         }
 
         .progress-bar {
-            background: rgba(255,255,255,0.2);
-            height: 10px;
-            border-radius: 5px;
+            background: rgba(0, 255, 65, 0.1);
+            height: 12px;
+            border: 1px solid var(--matrix-border);
             overflow: hidden;
+            position: relative;
         }
 
         .progress-fill {
-            background: var(--secondary-color);
+            background: var(--matrix-border);
             height: 100%;
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 0.5s;
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .progress-text {
             text-align: center;
             margin-top: 10px;
             font-size: 0.9em;
-            opacity: 0.9;
         }
 
+        /* Roadmap */
+        .roadmap-view {
+            padding: 60px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .roadmap-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .roadmap-header h2 {
+            font-size: 2.5em;
+            text-shadow: var(--glow);
+            margin-bottom: 15px;
+        }
+
+        .roadmap-map {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .roadmap-path {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--matrix-dark-green), var(--matrix-border));
+            transform: translateX(-50%);
+            box-shadow: var(--glow);
+        }
+
+        .roadmap-node {
+            position: relative;
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .roadmap-node:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .node-content {
+            flex: 1;
+            max-width: 45%;
+            background: var(--matrix-card);
+            border: 2px solid var(--matrix-border);
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .node-content:hover {
+            transform: scale(1.05);
+            box-shadow: var(--glow);
+        }
+
+        .node-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: var(--matrix-card);
+            border: 3px solid var(--matrix-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            box-shadow: var(--glow);
+            z-index: 2;
+        }
+
+        .node-content h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .node-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tool-tag {
+            padding: 4px 10px;
+            background: rgba(0, 255, 65, 0.2);
+            border: 1px solid var(--matrix-border);
+            font-size: 0.75em;
+            border-radius: 3px;
+        }
+
+        /* Module Content */
         .content {
             padding: 40px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -242,147 +425,157 @@
         }
 
         .module-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+            background: var(--matrix-card);
+            border: 2px solid var(--matrix-border);
+            padding: 40px;
             margin-bottom: 40px;
-            padding: 30px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-        .module-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--header-bg);
-            border-radius: 16px;
+        .module-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            animation: slideRight 3s infinite;
+        }
+
+        @keyframes slideRight {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        .module-header-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-icon-large {
+            width: 100px;
+            height: 100px;
+            background: var(--matrix-bg);
+            border: 3px solid var(--matrix-border);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5em;
+            font-size: 3em;
+            box-shadow: var(--glow);
             flex-shrink: 0;
         }
 
         .module-info h2 {
-            color: var(--primary-color);
-            font-size: 2.2em;
-            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: var(--glow);
+            margin-bottom: 15px;
         }
 
         .module-meta {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .meta-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: var(--text-secondary);
-            font-size: 0.95em;
+            font-size: 0.9em;
+            color: var(--matrix-dim);
         }
 
         .card {
-            background: var(--card-bg);
+            background: var(--matrix-card);
+            border: 2px solid var(--matrix-border);
             padding: 30px;
-            margin-bottom: 25px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: var(--glow);
+            transform: translateX(5px);
         }
 
         .card h3 {
-            color: var(--text-primary);
-            margin-bottom: 20px;
             font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-
-        .badge.success {
-            background: var(--secondary-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--matrix-green);
         }
 
         .card ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
+            margin-left: 25px;
         }
 
         .card li {
             margin-bottom: 12px;
-            color: var(--text-secondary);
+            position: relative;
+            padding-left: 10px;
         }
 
-        .card li strong {
-            color: var(--text-primary);
+        .card li::before {
+            content: '>';
+            position: absolute;
+            left: -15px;
+            color: var(--matrix-border);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background: var(--matrix-bg);
+            border: 2px solid var(--matrix-dark-green);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--matrix-border);
+            box-shadow: var(--glow);
+            transform: translateY(-5px);
+        }
+
+        .tool-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 5px var(--matrix-green));
+        }
+
+        .tool-name {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .tool-category {
+            font-size: 0.8em;
+            color: var(--matrix-dim);
         }
 
         .checkpoint {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.2), rgba(0, 143, 17, 0.2));
+            border: 2px solid var(--matrix-border);
             padding: 25px;
-            border-radius: 12px;
             margin-top: 20px;
         }
 
         .checkpoint h4 {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             font-size: 1.2em;
-        }
-
-        .timeline {
-            margin-top: 20px;
-        }
-
-        .timeline-item {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .timeline-item:last-child {
-            border-bottom: none;
-        }
-
-        .timeline-marker {
-            width: 50px;
-            height: 50px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .timeline-content h5 {
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            font-size: 1.1em;
-        }
-
-        .timeline-content p {
-            color: var(--text-secondary);
-            font-size: 0.95em;
         }
 
         .resources {
@@ -394,38 +587,29 @@
 
         .resource-btn {
             padding: 14px 28px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 10px;
+            background: var(--matrix-card);
+            border: 2px solid var(--matrix-border);
+            color: var(--matrix-text);
+            font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .resource-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            background: var(--matrix-border);
+            color: var(--matrix-bg);
+            box-shadow: var(--glow);
+            transform: translateY(-3px);
         }
 
         .completion-tracker {
-            background: var(--card-bg);
+            background: var(--matrix-card);
+            border: 2px solid var(--matrix-border);
             padding: 25px;
-            border-radius: 12px;
             margin-bottom: 30px;
-            border: 2px solid var(--secondary-color);
-        }
-
-        .completion-tracker h3 {
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .completion-item {
@@ -434,63 +618,54 @@
             gap: 12px;
             padding: 12px;
             margin-bottom: 10px;
-            border-radius: 8px;
             transition: background 0.2s;
         }
 
         .completion-item:hover {
-            background: var(--bg-color);
+            background: rgba(0, 255, 65, 0.1);
         }
 
         .completion-checkbox {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            accent-color: var(--secondary-color);
-        }
-
-        .completion-item label {
-            cursor: pointer;
-            flex: 1;
+            accent-color: var(--matrix-border);
         }
 
         footer {
-            background: var(--card-bg);
+            background: rgba(0, 0, 0, 0.95);
+            border-top: 2px solid var(--matrix-border);
             padding: 40px;
             text-align: center;
-            border-top: 1px solid var(--border-color);
             margin-top: 60px;
         }
 
-        footer h3 {
-            color: var(--text-primary);
-            margin-bottom: 15px;
-        }
-
-        footer p {
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-        }
-
-        .footer-links {
+        .search-results {
             margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
-        .footer-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
+        .search-result-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: var(--matrix-card);
+            border: 1px solid var(--matrix-dim);
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .footer-link:hover {
-            text-decoration: underline;
+        .search-result-item:hover {
+            border-color: var(--matrix-border);
+            box-shadow: var(--glow);
         }
 
-        /* Responsive Design */
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: var(--matrix-dim);
+        }
+
         @media (max-width: 1024px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -508,38 +683,20 @@
                 display: block;
             }
 
-            header h1 {
-                font-size: 2em;
+            .roadmap-node {
+                flex-direction: column !important;
             }
 
-            .content {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            header h1 {
-                font-size: 1.5em;
+            .node-content {
+                max-width: 100%;
             }
 
-            .module-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .module-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 2em;
-            }
-
-            .resources {
-                flex-direction: column;
-            }
-
-            .resource-btn {
-                width: 100%;
-                justify-content: center;
+            .node-icon {
+                position: relative;
+                left: auto;
+                top: auto;
+                transform: none;
+                margin: 20px auto;
             }
         }
 
@@ -550,7 +707,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 999;
         }
 
@@ -560,592 +717,887 @@
     </style>
 </head>
 <body>
+    <canvas id="matrix-canvas"></canvas>
+    
     <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
     <div class="overlay" onclick="toggleSidebar()"></div>
 
     <div class="container">
-        <!-- Sidebar Navigation -->
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>🚀 DevOps Guide</h2>
-                <p>6-10 Month Learning Path</p>
+            <div class="logo">
+                <h1>DEVOPS MATRIX</h1>
+                <p>> FOLLOW THE WHITE RABBIT</p>
             </div>
 
-            <div class="theme-toggle" onclick="toggleTheme()">
-                <span>🌙</span>
-                <div class="toggle-switch">
-                    <div class="toggle-slider"></div>
+            <!-- Advanced Search -->
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search modules, tools..." onkeyup="performSearch()">
+                
+                <div class="search-filters" id="searchFilters" style="display: none;">
+                    <div class="filter-group">
+                        <label>CATEGORY:</label>
+                        <select class="filter-select" id="categoryFilter" onchange="performSearch()">
+                            <option value="">All Categories</option>
+                            <option value="foundation">Foundation</option>
+                            <option value="tools">Core Tools</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="career">Career</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>DIFFICULTY:</label>
+                        <select class="filter-select" id="difficultyFilter" onchange="performSearch()">
+                            <option value="">All Levels</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>DURATION:</label>
+                        <select class="filter-select" id="durationFilter" onchange="performSearch()">
+                            <option value="">Any Duration</option>
+                            <option value="1-2">1-2 weeks</option>
+                            <option value="3-4">3-4 weeks</option>
+                            <option value="4+">4+ weeks</option>
+                        </select>
+                    </div>
                 </div>
-                <span>☀️</span>
+                
+                <div class="search-results" id="searchResults"></div>
             </div>
 
             <nav>
                 <div class="nav-section">
-                    <h3>Foundation (Weeks 1-8)</h3>
-                    <div class="nav-item active" onclick="showModule(1)">
-                        <span class="nav-item-icon">🌐</span>
-                        <span>Networking Foundations</span>
+                    <h3>> HOME</h3>
+                    <div class="nav-item active" onclick="showView('home')">
+                        <span class="nav-icon">🏠</span>
+                        <span>Home</span>
                     </div>
-                    <div class="nav-item" onclick="showModule(2)">
-                        <span class="nav-item-icon">🐧</span>
-                        <span>Linux Fundamentals</span>
-                    </div>
-                    <div class="nav-item" onclick="showModule(3)">
-                        <span class="nav-item-icon">💻</span>
-                        <span>Scripting (Bash/Python)</span>
+                    <div class="nav-item" onclick="showView('roadmap')">
+                        <span class="nav-icon">🗺️</span>
+                        <span>Roadmap</span>
                     </div>
                 </div>
 
                 <div class="nav-section">
-                    <h3>Core Tools (Weeks 9-16)</h3>
+                    <h3>> FOUNDATION [WEEKS 1-8]</h3>
+                    <div class="nav-item" onclick="showModule(1)">
+                        <span class="nav-icon">🌐</span>
+                        <span>Networking</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(2)">
+                        <span class="nav-icon">🐧</span>
+                        <span>Linux</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule(3)">
+                        <span class="nav-icon">💻</span>
+                        <span>Scripting</span>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>> CORE TOOLS [WEEKS 9-16]</h3>
                     <div class="nav-item" onclick="showModule(4)">
-                        <span class="nav-item-icon">📦</span>
+                        <span class="nav-icon">📦</span>
                         <span>Git & GitHub</span>
                     </div>
                     <div class="nav-item" onclick="showModule(5)">
-                        <span class="nav-item-icon">🔄</span>
-                        <span>CI/CD & Jenkins</span>
+                        <span class="nav-icon">🔄</span>
+                        <span>CI/CD Jenkins</span>
                     </div>
                     <div class="nav-item" onclick="showModule(6)">
-                        <span class="nav-item-icon">🐳</span>
-                        <span>Docker Containers</span>
+                        <span class="nav-icon">🐳</span>
+                        <span>Docker</span>
                     </div>
                     <div class="nav-item" onclick="showModule(7)">
-                        <span class="nav-item-icon">☸️</span>
+                        <span class="nav-icon">☸️</span>
                         <span>Kubernetes</span>
                     </div>
                 </div>
 
                 <div class="nav-section">
-                    <h3>Advanced (Weeks 17-24)</h3>
+                    <h3>> ADVANCED [WEEKS 17-24]</h3>
                     <div class="nav-item" onclick="showModule(8)">
-                        <span class="nav-item-icon">🏗️</span>
-                        <span>Terraform (IaC)</span>
+                        <span class="nav-icon">🏗️</span>
+                        <span>Terraform</span>
                     </div>
                     <div class="nav-item" onclick="showModule(9)">
-                        <span class="nav-item-icon">☁️</span>
+                        <span class="nav-icon">☁️</span>
                         <span>Cloud Platforms</span>
                     </div>
                     <div class="nav-item" onclick="showModule(10)">
-                        <span class="nav-item-icon">⚙️</span>
+                        <span class="nav-icon">⚙️</span>
                         <span>Ansible</span>
                     </div>
                     <div class="nav-item" onclick="showModule(11)">
-                        <span class="nav-item-icon">📊</span>
-                        <span>Monitoring & Logging</span>
+                        <span class="nav-icon">📊</span>
+                        <span>Monitoring</span>
                     </div>
                     <div class="nav-item" onclick="showModule(12)">
-                        <span class="nav-item-icon">🔒</span>
+                        <span class="nav-icon">🔒</span>
                         <span>DevSecOps</span>
                     </div>
                 </div>
 
                 <div class="nav-section">
-                    <h3>Career Ready (Weeks 25-28)</h3>
+                    <h3>> CAREER [WEEKS 25-28]</h3>
                     <div class="nav-item" onclick="showModule(13)">
-                        <span class="nav-item-icon">🚀</span>
-                        <span>Portfolio Projects</span>
+                        <span class="nav-icon">🚀</span>
+                        <span>Projects</span>
                     </div>
                     <div class="nav-item" onclick="showModule(14)">
-                        <span class="nav-item-icon">💼</span>
-                        <span>Job Preparation</span>
+                        <span class="nav-icon">💼</span>
+                        <span>Job Prep</span>
                     </div>
                 </div>
             </nav>
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- Main Content -->
         <main class="main-content">
             <header>
-                <h1>DevOps Transition Guide</h1>
-                <p>From Networking Professional to DevOps Engineer in 6-10 Months</p>
+                <h1>DEVOPS MATRIX</h1>
+                <p>> WAKE UP, NEO... THE MATRIX HAS YOU</p>
+                <p>> FOLLOW THE WHITE RABBIT</p>
                 <div class="progress-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <div class="progress-text" id="progressText">0% Complete</div>
+                    <div class="progress-text" id="progressText">SYSTEM INITIALIZATION: 0%</div>
                 </div>
             </header>
 
-            <div class="content">
-                <!-- Module 1: Networking Foundations -->
-                <section class="module-section active" data-module="1">
-                    <div class="module-header">
-                        <div class="module-icon">🌐</div>
-                        <div class="module-info">
-                            <h2>Networking Foundations Refresher</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 2-3 weeks</span>
-                                <span class="meta-item">📚 Level: Foundation</span>
-                                <span class="meta-item">🎯 Prerequisites: Basic IT knowledge</span>
+            <!-- Home View -->
+            <div class="home-view active" id="homeView">
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <h2 class="hero-title">> WELCOME TO THE DEVOPS MATRIX</h2>
+                        <p class="hero-subtitle">YOUR JOURNEY FROM NETWORKING PROFESSIONAL TO DEVOPS ENGINEER</p>
+                        <div class="hero-stats">
+                            <div class="stat-card">
+                                <div class="stat-number">14</div>
+                                <div class="stat-label">MODULES</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">6-10</div>
+                                <div class="stat-label">MONTHS</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">TOOLS</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">HANDS-ON</div>
                             </div>
                         </div>
+                        <div class="hero-actions">
+                            <button class="primary-btn" onclick="showView('roadmap')">
+                                >> START YOUR JOURNEY
+                            </button>
+                            <button class="secondary-btn" onclick="scrollToTools()">
+                                >> VIEW ALL TOOLS
+                            </button>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="completion-tracker">
-                        <h3>✅ Your Progress</h3>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="1">
-                            <label>Complete TCP/IP fundamentals review</label>
-                        </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="2">
-                            <label>Master subnetting calculations (CIDR notation)</label>
-                        </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="3">
-                            <label>Setup AWS VPC with subnets and security groups</label>
-                        </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="1" data-task="4">
-                            <label>Complete hybrid network design exercise</label>
-                        </div>
+                <div class="content" style="display: block;">
+                    <div class="section-header">
+                        <h2>>> WHAT IS DEVOPS?</h2>
+                        <p>The Matrix has many paths. DevOps is the bridge between development and operations.</p>
                     </div>
 
                     <div class="card">
-                        <h3>📚 Core Networking Concepts</h3>
+                        <h3>>> THE DEVOPS PHILOSOPHY</h3>
+                        <p style="margin-bottom: 20px;">DevOps is not just tools—it's a culture, methodology, and practice that emphasizes collaboration, automation, and continuous improvement.</p>
                         <ul>
-                            <li><strong>TCP/IP Stack:</strong> Deep dive into OSI vs TCP/IP models, packet encapsulation, headers analysis</li>
-                            <li><strong>Subnetting Mastery:</strong> CIDR notation, VLSM, IPv4 address planning, subnet calculations</li>
-                            <li><strong>DNS & DHCP:</strong> Name resolution process, DNS record types (A, AAAA, CNAME, MX, TXT), DHCP lease management</li>
-                            <li><strong>NAT & PAT:</strong> Network Address Translation, Port Address Translation, NAT types (static, dynamic, PAT)</li>
-                            <li><strong>VLANs & Switching:</strong> Virtual LANs, 802.1Q tagging, trunk ports, inter-VLAN routing</li>
-                            <li><strong>Routing Protocols:</strong> Static routing, RIP, EIGRP, OSPF concepts, BGP basics for cloud</li>
+                            <li><strong>CULTURE:</strong> Breaking down silos between development and operations teams</li>
+                            <li><strong>AUTOMATION:</strong> Automating repetitive tasks to increase efficiency and reduce errors</li>
+                            <li><strong>MEASUREMENT:</strong> Monitoring and measuring everything to drive improvements</li>
+                            <li><strong>SHARING:</strong> Open communication and knowledge sharing across teams</li>
+                            <li><strong>CONTINUOUS:</strong> Continuous integration, delivery, deployment, and improvement</li>
                         </ul>
                     </div>
 
-                    <div class="card">
-                        <h3>☁️ Cloud Networking Bridge <span class="badge success">Critical for DevOps</span></h3>
-                        <ul>
-                            <li><strong>VPC Fundamentals:</strong> AWS VPC, Azure VNet, GCP VPC - understand how traditional networks map to cloud</li>
-                            <li><strong>Subnets & Routing:</strong> Public vs private subnets, route tables, internet gateways, NAT gateways</li>
-                            <li><strong>Security Groups & NACLs:</strong> Stateful vs stateless firewalls, inbound/outbound rules</li>
-                            <li><strong>Load Balancers:</strong> Layer 4 vs Layer 7, Application Load Balancer (ALB), Network Load Balancer (NLB)</li>
-                            <li><strong>VPN & Direct Connect:</strong> Site-to-site VPN, AWS Direct Connect, Azure ExpressRoute, hybrid connectivity</li>
-                            <li><strong>DNS in Cloud:</strong> Route 53, Azure DNS, Cloud DNS - routing policies, health checks</li>
-                        </ul>
+                    <div class="section-header" style="margin-top: 60px;">
+                        <h2>>> WHY TRANSITION FROM NETWORKING?</h2>
+                        <p>Your networking background is your superpower in the DevOps world</p>
+                    </div>
 
-                        <div class="checkpoint">
-                            <h4>✅ Checkpoint Exercise</h4>
-                            <p><strong>Hybrid Network Design Project:</strong></p>
-                            <p>Design and document a complete hybrid cloud network architecture:</p>
-                            <ul style="margin-top: 10px;">
-                                <li>Create AWS VPC with public/private subnets across 2 AZs</li>
-                                <li>Configure security groups for web, app, and database tiers</li>
-                                <li>Setup NAT gateway for private subnet internet access</li>
-                                <li>Design VPN connection to simulate on-premises network</li>
-                                <li>Document IP addressing scheme and routing tables</li>
-                                <li>Draw network diagram using draw.io or Lucidchart</li>
-                            </ul>
+                    <div class="advantages-grid">
+                        <div class="advantage-card">
+                            <div class="advantage-icon">🌐</div>
+                            <h4>NETWORKING EXPERTISE</h4>
+                            <p>Understanding TCP/IP, routing, and network architecture gives you an edge in cloud infrastructure and container networking</p>
+                        </div>
+                        <div class="advantage-card">
+                            <div class="advantage-icon">🔧</div>
+                            <h4>TROUBLESHOOTING SKILLS</h4>
+                            <p>Your debugging experience translates directly to diagnosing complex distributed systems issues</p>
+                        </div>
+                        <div class="advantage-card">
+                            <div class="advantage-icon">🏗️</div>
+                            <h4>INFRASTRUCTURE MINDSET</h4>
+                            <p>You already think about scalability, redundancy, and high availability—core DevOps principles</p>
+                        </div>
+                        <div class="advantage-card">
+                            <div class="advantage-icon">📊</div>
+                            <h4>MONITORING EXPERIENCE</h4>
+                            <p>Network monitoring skills transfer seamlessly to application and infrastructure observability</p>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <h3>📅 Weekly Learning Timeline</h3>
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-marker">W1</div>
-                                <div class="timeline-content">
-                                    <h5>Week 1: TCP/IP & Subnetting Deep Dive</h5>
-                                    <p>Review OSI model layers, practice subnetting with online calculators, setup GNS3 or Packet Tracer for labs, complete 50+ subnetting exercises</p>
+                    <div class="section-header" style="margin-top: 60px;">
+                        <h2>>> LEARNING PATH OVERVIEW</h2>
+                        <p>Follow the structured path through the Matrix</p>
+                    </div>
+
+                    <div class="phase-timeline">
+                        <div class="phase-card">
+                            <div class="phase-number">01</div>
+                            <div class="phase-content">
+                                <h3>FOUNDATION PHASE</h3>
+                                <p class="phase-duration">WEEKS 1-8</p>
+                                <p>Master Linux, scripting, and networking fundamentals. Build your base knowledge.</p>
+                                <div class="phase-modules">
+                                    <span class="phase-module" onclick="showModule(1)">Networking</span>
+                                    <span class="phase-module" onclick="showModule(2)">Linux</span>
+                                    <span class="phase-module" onclick="showModule(3)">Scripting</span>
                                 </div>
                             </div>
-                            <div class="timeline-item">
-                                <div class="timeline-marker">W2</div>
-                                <div class="timeline-content">
-                                    <h5>Week 2: DNS, NAT, VLANs Configuration</h5>
-                                    <p>Configure DNS servers, implement NAT/PAT on routers, create VLAN scenarios, practice inter-VLAN routing, troubleshoot connectivity issues</p>
+                        </div>
+
+                        <div class="phase-card">
+                            <div class="phase-number">02</div>
+                            <div class="phase-content">
+                                <h3>CORE TOOLS PHASE</h3>
+                                <p class="phase-duration">WEEKS 9-16</p>
+                                <p>Learn version control, CI/CD, containers, and orchestration platforms.</p>
+                                <div class="phase-modules">
+                                    <span class="phase-module" onclick="showModule(4)">Git</span>
+                                    <span class="phase-module" onclick="showModule(5)">CI/CD</span>
+                                    <span class="phase-module" onclick="showModule(6)">Docker</span>
+                                    <span class="phase-module" onclick="showModule(7)">Kubernetes</span>
                                 </div>
                             </div>
-                            <div class="timeline-item">
-                                <div class="timeline-marker">W3</div>
-                                <div class="timeline-content">
-                                    <h5>Week 3: Cloud Networking Hands-on</h5>
-                                    <p>Create AWS free tier account, build VPC from scratch, configure security groups and NACLs, deploy EC2 instances in public/private subnets, setup load balancer</p>
+                        </div>
+
+                        <div class="phase-card">
+                            <div class="phase-number">03</div>
+                            <div class="phase-content">
+                                <h3>ADVANCED PHASE</h3>
+                                <p class="phase-duration">WEEKS 17-24</p>
+                                <p>Infrastructure as Code, cloud platforms, configuration management, and monitoring.</p>
+                                <div class="phase-modules">
+                                    <span class="phase-module" onclick="showModule(8)">Terraform</span>
+                                    <span class="phase-module" onclick="showModule(9)">Cloud</span>
+                                    <span class="phase-module" onclick="showModule(10)">Ansible</span>
+                                    <span class="phase-module" onclick="showModule(11)">Monitoring</span>
+                                    <span class="phase-module" onclick="showModule(12)">Security</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="phase-card">
+                            <div class="phase-number">04</div>
+                            <div class="phase-content">
+                                <h3>CAREER READY PHASE</h3>
+                                <p class="phase-duration">WEEKS 25-28</p>
+                                <p>Build portfolio projects, prepare resume, and master interview skills.</p>
+                                <div class="phase-modules">
+                                    <span class="phase-module" onclick="showModule(13)">Projects</span>
+                                    <span class="phase-module" onclick="showModule(14)">Job Prep</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="resources">
-                        <button class="resource-btn" onclick="openResource('https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html')">
-                            📖 TCP/IP Deep Dive Guide
+                    <div class="section-header" style="margin-top: 60px;" id="toolsSection">
+                        <h2>>> COMPLETE TOOLS & TECHNOLOGIES MATRIX</h2>
+                        <p>Master these essential DevOps tools throughout your journey</p>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>🌐 NETWORKING & CLOUD</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(1)">
+                                <div class="tool-icon">🔍</div>
+                                <div class="tool-name">Wireshark</div>
+                                <div class="tool-category">Network Analysis</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(1)">
+                                <div class="tool-icon">🌐</div>
+                                <div class="tool-name">GNS3</div>
+                                <div class="tool-category">Network Simulator</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(9)">
+                                <div class="tool-icon">☁️</div>
+                                <div class="tool-name">AWS</div>
+                                <div class="tool-category">Cloud Platform</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(9)">
+                                <div class="tool-icon">☁️</div>
+                                <div class="tool-name">Azure</div>
+                                <div class="tool-category">Cloud Platform</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(9)">
+                                <div class="tool-icon">☁️</div>
+                                <div class="tool-name">GCP</div>
+                                <div class="tool-category">Cloud Platform</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>💻 OPERATING SYSTEMS & SCRIPTING</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(2)">
+                                <div class="tool-icon">🐧</div>
+                                <div class="tool-name">Ubuntu</div>
+                                <div class="tool-category">Linux Distribution</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(2)">
+                                <div class="tool-icon">🐧</div>
+                                <div class="tool-name">CentOS</div>
+                                <div class="tool-category">Linux Distribution</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(3)">
+                                <div class="tool-icon">📝</div>
+                                <div class="tool-name">Bash</div>
+                                <div class="tool-category">Shell Scripting</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(3)">
+                                <div class="tool-icon">🐍</div>
+                                <div class="tool-name">Python</div>
+                                <div class="tool-category">Programming</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>📦 VERSION CONTROL & CI/CD</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(4)">
+                                <div class="tool-icon">📦</div>
+                                <div class="tool-name">Git</div>
+                                <div class="tool-category">Version Control</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(4)">
+                                <div class="tool-icon">🐙</div>
+                                <div class="tool-name">GitHub</div>
+                                <div class="tool-category">Git Hosting</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(4)">
+                                <div class="tool-icon">🦊</div>
+                                <div class="tool-name">GitLab</div>
+                                <div class="tool-category">DevOps Platform</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(5)">
+                                <div class="tool-icon">🔧</div>
+                                <div class="tool-name">Jenkins</div>
+                                <div class="tool-category">CI/CD Server</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(5)">
+                                <div class="tool-icon">⚡</div>
+                                <div class="tool-name">GitHub Actions</div>
+                                <div class="tool-category">CI/CD Automation</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(5)">
+                                <div class="tool-icon">🔄</div>
+                                <div class="tool-name">CircleCI</div>
+                                <div class="tool-category">CI/CD Platform</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>🐳 CONTAINERS & ORCHESTRATION</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(6)">
+                                <div class="tool-icon">🐳</div>
+                                <div class="tool-name">Docker</div>
+                                <div class="tool-category">Containerization</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(6)">
+                                <div class="tool-icon">📦</div>
+                                <div class="tool-name">Docker Compose</div>
+                                <div class="tool-category">Container Orchestration</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(7)">
+                                <div class="tool-icon">☸️</div>
+                                <div class="tool-name">Kubernetes</div>
+                                <div class="tool-category">Container Orchestration</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(7)">
+                                <div class="tool-icon">⎈</div>
+                                <div class="tool-name">Helm</div>
+                                <div class="tool-category">Package Manager</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(7)">
+                                <div class="tool-icon">🚀</div>
+                                <div class="tool-name">Minikube</div>
+                                <div class="tool-category">Local Kubernetes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>🏗️ INFRASTRUCTURE AS CODE</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(8)">
+                                <div class="tool-icon">🏗️</div>
+                                <div class="tool-name">Terraform</div>
+                                <div class="tool-category">IaC Tool</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(8)">
+                                <div class="tool-icon">☁️</div>
+                                <div class="tool-name">CloudFormation</div>
+                                <div class="tool-category">AWS IaC</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(8)">
+                                <div class="tool-icon">⚡</div>
+                                <div class="tool-name">Pulumi</div>
+                                <div class="tool-category">Modern IaC</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>⚙️ CONFIGURATION MANAGEMENT</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(10)">
+                                <div class="tool-icon">⚙️</div>
+                                <div class="tool-name">Ansible</div>
+                                <div class="tool-category">Configuration Management</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(10)">
+                                <div class="tool-icon">🤖</div>
+                                <div class="tool-name">Puppet</div>
+                                <div class="tool-category">Configuration Management</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(10)">
+                                <div class="tool-icon">👨‍🍳</div>
+                                <div class="tool-name">Chef</div>
+                                <div class="tool-category">Configuration Management</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(10)">
+                                <div class="tool-icon">🧂</div>
+                                <div class="tool-name">SaltStack</div>
+                                <div class="tool-category">Configuration Management</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>📊 MONITORING & LOGGING</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(11)">
+                                <div class="tool-icon">📈</div>
+                                <div class="tool-name">Prometheus</div>
+                                <div class="tool-category">Monitoring</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(11)">
+                                <div class="tool-icon">📊</div>
+                                <div class="tool-name">Grafana</div>
+                                <div class="tool-category">Visualization</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(11)">
+                                <div class="tool-icon">🔍</div>
+                                <div class="tool-name">ELK Stack</div>
+                                <div class="tool-category">Log Management</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(11)">
+                                <div class="tool-icon">🐶</div>
+                                <div class="tool-name">Datadog</div>
+                                <div class="tool-category">APM & Monitoring</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(11)">
+                                <div class="tool-icon">📉</div>
+                                <div class="tool-name">New Relic</div>
+                                <div class="tool-category">APM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tools-category">
+                        <h3>🔒 SECURITY & DEVSECOPS</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card" onclick="showModule(12)">
+                                <div class="tool-icon">🔐</div>
+                                <div class="tool-name">HashiCorp Vault</div>
+                                <div class="tool-category">Secrets Management</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(12)">
+                                <div class="tool-icon">🔍</div>
+                                <div class="tool-name">SonarQube</div>
+                                <div class="tool-category">Code Quality</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(12)">
+                                <div class="tool-icon">🛡️</div>
+                                <div class="tool-name">Trivy</div>
+                                <div class="tool-category">Vulnerability Scanner</div>
+                            </div>
+                            <div class="tool-card" onclick="showModule(12)">
+                                <div class="tool-icon">🐍</div>
+                                <div class="tool-name">Snyk</div>
+                                <div class="tool-category">Security Platform</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <h2>>> READY TO START YOUR JOURNEY?</h2>
+                        <p>Follow the white rabbit. Your DevOps transformation begins now.</p>
+                        <button class="primary-btn" onclick="showView('roadmap')" style="margin-top: 30px;">
+                            >> BEGIN TRAINING PROGRAM
                         </button>
-                        <button class="resource-btn" onclick="openResource('https://www.subnet-calculator.com/')">
-                            🔢 Subnetting Practice Tool
-                        </button>
-                        <button class="resource-btn" onclick="openResource('https://aws.amazon.com/vpc/getting-started/')">
-                            ☁️ AWS VPC Tutorial
-                        </button>
-                        <button class="resource-btn" onclick="openResource('https://www.gns3.com/')">
-                            🧪 GNS3 Network Simulator
-                        </button>
                     </div>
-                </section>
+                </div>
+            </div>
 
-                <!-- Module 2: Linux Fundamentals -->
-                <section class="module-section" data-module="2">
-                    <div class="module-header">
-                        <div class="module-icon">🐧</div>
-                        <div class="module-info">
-                            <h2>Linux Fundamentals</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 3-4 weeks</span>
-                                <span class="meta-item">📚 Level: Essential</span>
-                                <span class="meta-item">🎯 Daily Practice Required</span>
+            <!-- Roadmap View -->
+            <div class="roadmap-view active" id="roadmapView">
+                <div class="roadmap-header">
+                    <h2>> YOUR PATH THROUGH THE MATRIX</h2>
+                    <p>CLICK ANY NODE TO ACCESS THE TRAINING PROGRAM</p>
+                </div>
+
+                <div class="roadmap-map">
+                    <div class="roadmap-path"></div>
+                    
+                    <div class="roadmap-node">
+                        <div class="node-content" onclick="showModule(1)">
+                            <h3>🌐 NETWORKING FOUNDATIONS</h3>
+                            <p>TCP/IP • Subnetting • VPC • Security Groups</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Wireshark</span>
+                                <span class="tool-tag">GNS3</span>
+                                <span class="tool-tag">AWS VPC</span>
+                                <span class="tool-tag">Packet Tracer</span>
+                            </div>
+                        </div>
+                        <div class="node-icon">🌐</div>
+                        <div style="flex: 1"></div>
+                    </div>
+
+                    <div class="roadmap-node">
+                        <div style="flex: 1"></div>
+                        <div class="node-icon">🐧</div>
+                        <div class="node-content" onclick="showModule(2)">
+                            <h3>🐧 LINUX MASTERY</h3>
+                            <p>Commands • SSH • Systemd • Cron • Security</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Ubuntu</span>
+                                <span class="tool-tag">CentOS</span>
+                                <span class="tool-tag">SSH</span>
+                                <span class="tool-tag">systemctl</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="completion-tracker">
-                        <h3>✅ Your Progress</h3>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="1">
-                            <label>Master 50+ essential Linux commands</label>
+                    <div class="roadmap-node">
+                        <div class="node-content" onclick="showModule(3)">
+                            <h3>💻 SCRIPTING POWER</h3>
+                            <p>Bash • Python • Automation • APIs</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Bash</span>
+                                <span class="tool-tag">Python</span>
+                                <span class="tool-tag">boto3</span>
+                                <span class="tool-tag">requests</span>
+                            </div>
                         </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="2">
-                            <label>Configure SSH key-based authentication</label>
-                        </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="3">
-                            <label>Create and manage systemd services</label>
-                        </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="2" data-task="4">
-                            <label>Complete web server deployment project</label>
-                        </div>
+                        <div class="node-icon">💻</div>
+                        <div style="flex: 1"></div>
                     </div>
 
-                    <div class="card">
-                        <h3>🔧 Essential Linux Commands <span class="badge">Daily Use</span></h3>
-                        <ul>
-                            <li><strong>File Management:</strong> ls, cd, pwd, cp, mv, rm, mkdir, rmdir, touch, find, locate</li>
-                            <li><strong>Text Processing:</strong> cat, less, head, tail, grep, awk, sed, cut, sort, uniq, wc</li>
-                            <li><strong>Permissions:</strong> chmod, chown, chgrp, umask, ACLs (setfacl, getfacl), sudo configuration</li>
-                            <li><strong>Process Management:</strong> ps, top, htop, kill, killall, pkill, nice, renice, bg, fg, jobs</li>
-                            <li><strong>Networking:</strong> ip, ifconfig, netstat, ss, ping, traceroute, tcpdump, nc, curl, wget</li>
-                            <li><strong>Package Management:</strong> apt/apt-get (Debian/Ubuntu), yum/dnf (RHEL/CentOS), managing repositories</li>
-                            <li><strong>Archive & Compression:</strong> tar, gzip, bzip2, zip, unzip, rsync for backups</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>⚙️ System Administration <span class="badge success">Critical Skills</span></h3>
-                        <ul>
-                            <li><strong>SSH Configuration:</strong> Key-based authentication, ssh-agent, config file (~/.ssh/config), tunneling, port forwarding</li>
-                            <li><strong>Systemd Services:</strong> Understanding unit files, systemctl commands (start, stop, enable, disable), creating custom services</li>
-                            <li><strong>Cron Jobs & Scheduling:</strong> Crontab syntax, scheduling tasks, anacron, systemd timers as alternative</li>
-                            <li><strong>Log Management:</strong> /var/log directory, syslog, journalctl commands, logrotate configuration</li>
-                            <li><strong>Storage Management:</strong> LVM (Logical Volume Manager), mounting filesystems, /etc/fstab, disk utilities (fdisk, parted, df, du)</li>
-                            <li><strong>User Management:</strong> useradd, usermod, userdel, group management, /etc/passwd, /etc/shadow</li>
-                        </ul>
-
-                        <div class="checkpoint">
-                            <h4>✅ Checkpoint Exercise</h4>
-                            <p><strong>Deploy Production Web Server:</strong></p>
-                            <ul style="margin-top: 10px;">
-                                <li>Install and configure Nginx or Apache web server</li>
-                                <li>Setup SSH key-based authentication (disable password auth)</li>
-                                <li>Create systemd service for a custom application</li>
-                                <li>Configure automated backup cron job to run daily</li>
-                                <li>Implement log rotation for application logs</li>
-                                <li>Setup firewall rules using ufw or iptables</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="resources">
-                        <button class="resource-btn" onclick="openResource('https://linuxjourney.com/')">
-                            📖 Linux Journey Tutorial
-                        </button>
-                        <button class="resource-btn" onclick="openResource('https://overthewire.org/wargames/bandit/')">
-                            🎮 Bandit Linux Challenge
-                        </button>
-                        <button class="resource-btn" onclick="openResource('https://www.digitalocean.com/community/tutorials')">
-                            🧪 DigitalOcean Tutorials
-                        </button>
-                    </div>
-                </section>
-
-                <!-- Module 3: Scripting -->
-                <section class="module-section" data-module="3">
-                    <div class="module-header">
-                        <div class="module-icon">💻</div>
-                        <div class="module-info">
-                            <h2>Scripting Basics (Python + Bash)</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 4 weeks</span>
-                                <span class="meta-item">📚 Level: Foundation</span>
-                                <span class="meta-item">🎯 Automation Focus</span>
+                    <div class="roadmap-node">
+                        <div style="flex: 1"></div>
+                        <div class="node-icon">📦</div>
+                        <div class="node-content" onclick="showModule(4)">
+                            <h3>📦 VERSION CONTROL</h3>
+                            <p>Git • GitHub • GitLab • Workflows</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Git</span>
+                                <span class="tool-tag">GitHub</span>
+                                <span class="tool-tag">GitLab</span>
+                                <span class="tool-tag">Bitbucket</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="completion-tracker">
-                        <h3>✅ Your Progress</h3>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="3" data-task="1">
-                            <label>Complete 20+ Bash automation scripts</label>
+                    <div class="roadmap-node">
+                        <div class="node-content" onclick="showModule(5)">
+                            <h3>🔄 CI/CD PIPELINE</h3>
+                            <p>Jenkins • GitHub Actions • GitLab CI</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Jenkins</span>
+                                <span class="tool-tag">GitHub Actions</span>
+                                <span class="tool-tag">GitLab CI</span>
+                                <span class="tool-tag">CircleCI</span>
+                            </div>
                         </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="3" data-task="2">
-                            <label>Build Python scripts for API interactions</label>
-                        </div>
-                        <div class="completion-item">
-                            <input type="checkbox" class="completion-checkbox" data-module="3" data-task="3">
-                            <label>Create server health monitoring tool</label>
-                        </div>
+                        <div class="node-icon">🔄</div>
+                        <div style="flex: 1"></div>
                     </div>
 
-                    <div class="card">
-                        <h3>🐚 Bash Scripting Essentials</h3>
-                        <ul>
-                            <li><strong>Fundamentals:</strong> Variables, command substitution, exit codes, debugging with set -x</li>
-                            <li><strong>Control Structures:</strong> if/elif/else, case statements, for/while loops, break/continue</li>
-                            <li><strong>Functions:</strong> Creating reusable functions, parameters ($1, $2, $@), return values</li>
-                            <li><strong>Input/Output:</strong> Reading files, user input with read, redirections (>, >>, <, |)</li>
-                            <li><strong>Error Handling:</strong> Exit codes, trap command for cleanup, set -e for error exit</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>🐍 Python for DevOps</h3>
-                        <ul>
-                            <li><strong>Python Basics:</strong> Data types, functions, classes, modules, virtual environments</li>
-                            <li><strong>Essential Libraries:</strong> os, sys, subprocess, argparse, logging, datetime</li>
-                            <li><strong>API Interactions:</strong> requests library, REST APIs, JSON handling, authentication</li>
-                            <li><strong>AWS SDK (boto3):</strong> Managing EC2, S3, Lambda, IAM programmatically</li>
-                            <li><strong>Configuration Files:</strong> YAML, JSON parsing, environment variables with python-dotenv</li>
-                        </ul>
-                    </div>
-
-                    <div class="resources">
-                        <button class="resource-btn" onclick="openResource('https://www.shellscript.sh/')">
-                            📖 Bash Scripting Guide
-                        </button>
-                        <button class="resource-btn" onclick="openResource('https://realpython.com/')">
-                            🐍 Real Python Tutorials
-                        </button>
-                        <button class="resource-btn" onclick="openResource('https://boto3.amazonaws.com/v1/documentation/api/latest/index.html')">
-                            ☁️ Boto3 Documentation
-                        </button>
-                    </div>
-                </section>
-
-                <!-- Additional modules placeholder -->
-                <section class="module-section" data-module="4">
-                    <div class="module-header">
-                        <div class="module-icon">📦</div>
-                        <div class="module-info">
-                            <h2>Git & GitHub</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
-                                <span class="meta-item">📚 Level: Essential</span>
+                    <div class="roadmap-node">
+                        <div style="flex: 1"></div>
+                        <div class="node-icon">🐳</div>
+                        <div class="node-content" onclick="showModule(6)">
+                            <h3>🐳 CONTAINERIZATION</h3>
+                            <p>Docker • Docker Compose • Registries</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Docker</span>
+                                <span class="tool-tag">Docker Compose</span>
+                                <span class="tool-tag">Docker Hub</span>
+                                <span class="tool-tag">Podman</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <h3>📚 Version Control Fundamentals</h3>
-                        <p>Master Git workflows, branching strategies, pull requests, and GitHub Actions for CI/CD automation.</p>
-                        <div class="resources">
-                            <button class="resource-btn" onclick="openResource('https://git-scm.com/doc')">📖 Git Documentation</button>
-                        </div>
-                    </div>
-                </section>
 
-                <section class="module-section" data-module="5">
-                    <div class="module-header">
-                        <div class="module-icon">🔄</div>
-                        <div class="module-info">
-                            <h2>CI/CD & Jenkins</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
+                    <div class="roadmap-node">
+                        <div class="node-content" onclick="showModule(7)">
+                            <h3>☸️ KUBERNETES</h3>
+                            <p>Pods • Services • Deployments • Helm</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Kubernetes</span>
+                                <span class="tool-tag">kubectl</span>
+                                <span class="tool-tag">Helm</span>
+                                <span class="tool-tag">Minikube</span>
+                            </div>
+                        </div>
+                        <div class="node-icon">☸️</div>
+                        <div style="flex: 1"></div>
+                    </div>
+
+                    <div class="roadmap-node">
+                        <div style="flex: 1"></div>
+                        <div class="node-icon">🏗️</div>
+                        <div class="node-content" onclick="showModule(8)">
+                            <h3>🏗️ INFRASTRUCTURE AS CODE</h3>
+                            <p>Terraform • CloudFormation • Pulumi</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Terraform</span>
+                                <span class="tool-tag">CloudFormation</span>
+                                <span class="tool-tag">Pulumi</span>
+                                <span class="tool-tag">ARM Templates</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <h3>🔄 Continuous Integration & Deployment</h3>
-                        <p>Learn Jenkins pipelines, automation principles, and integration with version control systems.</p>
-                    </div>
-                </section>
 
-                <section class="module-section" data-module="6">
-                    <div class="module-header">
-                        <div class="module-icon">🐳</div>
-                        <div class="module-info">
-                            <h2>Docker Containers</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
+                    <div class="roadmap-node">
+                        <div class="node-content" onclick="showModule(9)">
+                            <h3>☁️ CLOUD PLATFORMS</h3>
+                            <p>AWS • Azure • GCP • Multi-Cloud</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">AWS</span>
+                                <span class="tool-tag">Azure</span>
+                                <span class="tool-tag">GCP</span>
+                                <span class="tool-tag">DigitalOcean</span>
+                            </div>
+                        </div>
+                        <div class="node-icon">☁️</div>
+                        <div style="flex: 1"></div>
+                    </div>
+
+                    <div class="roadmap-node">
+                        <div style="flex: 1"></div>
+                        <div class="node-icon">⚙️</div>
+                        <div class="node-content" onclick="showModule(10)">
+                            <h3>⚙️ CONFIGURATION MANAGEMENT</h3>
+                            <p>Ansible • Puppet • Chef • SaltStack</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Ansible</span>
+                                <span class="tool-tag">Puppet</span>
+                                <span class="tool-tag">Chef</span>
+                                <span class="tool-tag">SaltStack</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <h3>🐳 Container Technology</h3>
-                        <p>Docker architecture, images, containers, Docker Compose, and containerizing applications.</p>
-                    </div>
-                </section>
 
-                <section class="module-section" data-module="7">
-                    <div class="module-header">
-                        <div class="module-icon">☸️</div>
-                        <div class="module-info">
-                            <h2>Kubernetes Orchestration</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 4 weeks</span>
+                    <div class="roadmap-node">
+                        <div class="node-content" onclick="showModule(11)">
+                            <h3>📊 MONITORING & LOGGING</h3>
+                            <p>Prometheus • Grafana • ELK • Datadog</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Prometheus</span>
+                                <span class="tool-tag">Grafana</span>
+                                <span class="tool-tag">ELK Stack</span>
+                                <span class="tool-tag">Datadog</span>
+                            </div>
+                        </div>
+                        <div class="node-icon">📊</div>
+                        <div style="flex: 1"></div>
+                    </div>
+
+                    <div class="roadmap-node">
+                        <div style="flex: 1"></div>
+                        <div class="node-icon">🔒</div>
+                        <div class="node-content" onclick="showModule(12)">
+                            <h3>🔒 DEVSECOPS</h3>
+                            <p>SAST • DAST • Secrets • Compliance</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">Vault</span>
+                                <span class="tool-tag">SonarQube</span>
+                                <span class="tool-tag">Trivy</span>
+                                <span class="tool-tag">Snyk</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <h3>☸️ Container Orchestration</h3>
-                        <p>Pods, Services, Deployments, kubectl, Minikube, and managed Kubernetes services.</p>
-                    </div>
-                </section>
 
-                <section class="module-section" data-module="8">
-                    <div class="module-header">
-                        <div class="module-icon">🏗️</div>
-                        <div class="module-info">
-                            <h2>Terraform (Infrastructure as Code)</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
+                    <div class="roadmap-node">
+                        <div class="node-content" onclick="showModule(13)">
+                            <h3>🚀 PORTFOLIO PROJECTS</h3>
+                            <p>End-to-End Deployments • Documentation</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">GitHub</span>
+                                <span class="tool-tag">README</span>
+                                <span class="tool-tag">Demo Apps</span>
+                                <span class="tool-tag">CI/CD</span>
+                            </div>
+                        </div>
+                        <div class="node-icon">🚀</div>
+                        <div style="flex: 1"></div>
+                    </div>
+
+                    <div class="roadmap-node">
+                        <div style="flex: 1"></div>
+                        <div class="node-icon">💼</div>
+                        <div class="node-content" onclick="showModule(14)">
+                            <h3>💼 CAREER READINESS</h3>
+                            <p>Resume • Interview • Job Search</p>
+                            <div class="node-tools">
+                                <span class="tool-tag">LinkedIn</span>
+                                <span class="tool-tag">Resume</span>
+                                <span class="tool-tag">Portfolio</span>
+                                <span class="tool-tag">Networking</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <h3>🏗️ Infrastructure Automation</h3>
-                        <p>Terraform fundamentals, providers, resources, state management, and multi-cloud deployments.</p>
-                    </div>
-                </section>
+                </div>
+            </div>
 
-                <section class="module-section" data-module="9">
-                    <div class="module-header">
-                        <div class="module-icon">☁️</div>
-                        <div class="module-info">
-                            <h2>Cloud Platforms (AWS/Azure/GCP)</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 4 weeks</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>☁️ Cloud Services Mastery</h3>
-                        <p>AWS EC2, S3, IAM, VPC, Lambda, Azure and GCP equivalents, cloud-native architecture.</p>
-                    </div>
-                </section>
-
-                <section class="module-section" data-module="10">
-                    <div class="module-header">
-                        <div class="module-icon">⚙️</div>
-                        <div class="module-info">
-                            <h2>Ansible Configuration Management</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>⚙️ Automation with Ansible</h3>
-                        <p>Playbooks, inventory files, roles, modules, and idempotent configuration management.</p>
-                    </div>
-                </section>
-
-                <section class="module-section" data-module="11">
-                    <div class="module-header">
-                        <div class="module-icon">📊</div>
-                        <div class="module-info">
-                            <h2>Monitoring & Logging</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>📊 Observability Stack</h3>
-                        <p>Prometheus metrics, Grafana dashboards, ELK/EFK stack, alerting, and log aggregation.</p>
-                    </div>
-                </section>
-
-                <section class="module-section" data-module="12">
-                    <div class="module-header">
-                        <div class="module-icon">🔒</div>
-                        <div class="module-info">
-                            <h2>DevSecOps & Security</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>🔒 Security Best Practices</h3>
-                        <p>Secrets management, vulnerability scanning, SAST/DAST, security in CI/CD pipelines.</p>
-                    </div>
-                </section>
-
-                <section class="module-section" data-module="13">
-                    <div class="module-header">
-                        <div class="module-icon">🚀</div>
-                        <div class="module-info">
-                            <h2>Portfolio Projects</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 3 weeks</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>🚀 Build Your Portfolio</h3>
-                        <p>Deploy full-stack applications integrating all learned tools, document on GitHub with README.</p>
-                    </div>
-                </section>
-
-                <section class="module-section" data-module="14">
-                    <div class="module-header">
-                        <div class="module-icon">💼</div>
-                        <div class="module-info">
-                            <h2>Job Preparation & Resume</h2>
-                            <div class="module-meta">
-                                <span class="meta-item">⏱️ Duration: 2 weeks</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>💼 Career Readiness</h3>
-                        <p>Resume optimization, LinkedIn profile, interview preparation, mock interviews, job search strategy.</p>
-                    </div>
-                </section>
+            <!-- Module Content Container -->
+            <div class="content" id="moduleContent" style="display: none;">
+                <!-- Modules will be loaded here -->
             </div>
 
             <footer>
-                <h3>📧 Contact & Support</h3>
-                <p>Questions? Need guidance? Reach out to the DevOps community!</p>
-                <div class="footer-links">
-                    <a href="#" class="footer-link">📚 Additional Resources</a>
-                    <a href="#" class="footer-link">💬 Join Discord Community</a>
-                    <a href="#" class="footer-link">🎓 Certification Paths</a>
-                    <a href="#" class="footer-link">📝 Blog & Updates</a>
-                </div>
-                <p style="margin-top: 20px; color: var(--text-secondary);">
-                    <strong>Pro Tip:</strong> Dedicate 2-3 hours daily. Consistency beats intensity. Build projects, not just tutorials.
+                <h3>> SYSTEM MESSAGE</h3>
+                <p>REMEMBER: THE MATRIX IS EVERYWHERE. IT IS ALL AROUND US.</p>
+                <p>DEVOPS IS THE PATH. FOLLOW IT.</p>
+                <p style="margin-top: 20px; color: var(--matrix-dim);">
+                    > STAY FOCUSED. PRACTICE DAILY. BUILD PROJECTS. NEVER STOP LEARNING.
                 </p>
             </footer>
         </main>
     </div>
 
     <script>
-        // Theme toggle functionality
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
         }
 
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
 
-        // Sidebar toggle for mobile
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Search functionality with indexing
+        const searchIndex = {
+            modules: [
+                { id: 1, name: 'Networking Foundations', category: 'foundation', difficulty: 'beginner', duration: '2-3', tools: ['Wireshark', 'GNS3', 'AWS VPC', 'Packet Tracer'], keywords: 'tcp ip subnetting dns nat vlan routing vpc security groups' },
+                { id: 2, name: 'Linux Fundamentals', category: 'foundation', difficulty: 'beginner', duration: '3-4', tools: ['Ubuntu', 'CentOS', 'SSH', 'systemctl'], keywords: 'bash commands permissions ssh systemd cron logs' },
+                { id: 3, name: 'Scripting Basics', category: 'foundation', difficulty: 'beginner', duration: '4', tools: ['Bash', 'Python', 'boto3', 'requests'], keywords: 'bash python automation api scripting' },
+                { id: 4, name: 'Git & GitHub', category: 'tools', difficulty: 'beginner', duration: '2', tools: ['Git', 'GitHub', 'GitLab', 'Bitbucket'], keywords: 'version control git github gitlab workflows branches' },
+                { id: 5, name: 'CI/CD & Jenkins', category: 'tools', difficulty: 'intermediate', duration: '3', tools: ['Jenkins', 'GitHub Actions', 'GitLab CI', 'CircleCI'], keywords: 'jenkins pipeline cicd automation continuous integration deployment' },
+                { id: 6, name: 'Docker Containers', category: 'tools', difficulty: 'intermediate', duration: '3', tools: ['Docker', 'Docker Compose', 'Docker Hub', 'Podman'], keywords: 'docker containers images compose containerization' },
+                { id: 7, name: 'Kubernetes', category: 'tools', difficulty: 'advanced', duration: '4', tools: ['Kubernetes', 'kubectl', 'Helm', 'Minikube'], keywords: 'kubernetes k8s pods services deployments orchestration helm' },
+                { id: 8, name: 'Terraform', category: 'advanced', difficulty: 'intermediate', duration: '3', tools: ['Terraform', 'CloudFormation', 'Pulumi', 'ARM Templates'], keywords: 'terraform iac infrastructure as code cloudformation' },
+                { id: 9, name: 'Cloud Platforms', category: 'advanced', difficulty: 'intermediate', duration: '4', tools: ['AWS', 'Azure', 'GCP', 'DigitalOcean'], keywords: 'aws azure gcp cloud ec2 s3 lambda compute storage' },
+                { id: 10, name: 'Ansible', category: 'advanced', difficulty: 'intermediate', duration: '2', tools: ['Ansible', 'Puppet', 'Chef', 'SaltStack'], keywords: 'ansible playbooks configuration management automation' },
+                { id: 11, name: 'Monitoring & Logging', category: 'advanced', difficulty: 'intermediate', duration: '2', tools: ['Prometheus', 'Grafana', 'ELK Stack', 'Datadog'], keywords: 'prometheus grafana elk monitoring logging observability metrics' },
+                { id: 12, name: 'DevSecOps', category: 'advanced', difficulty: 'advanced', duration: '2', tools: ['Vault', 'SonarQube', 'Trivy', 'Snyk'], keywords: 'security devsecops vault secrets scanning sast dast' },
+                { id: 13, name: 'Portfolio Projects', category: 'career', difficulty: 'intermediate', duration: '3', tools: ['GitHub', 'README', 'Demo Apps', 'CI/CD'], keywords: 'projects portfolio github demo deployment documentation' },
+                { id: 14, name: 'Job Preparation', category: 'career', difficulty: 'beginner', duration: '2', tools: ['LinkedIn', 'Resume', 'Portfolio', 'Networking'], keywords: 'resume interview job career linkedin preparation' }
+            ]
+        };
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const difficulty = document.getElementById('difficultyFilter').value;
+            const duration = document.getElementById('durationFilter').value;
+            const resultsContainer = document.getElementById('searchResults');
+
+            if (searchTerm.length === 0) {
+                resultsContainer.innerHTML = '';
+                document.getElementById('searchFilters').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('searchFilters').style.display = 'block';
+
+            let results = searchIndex.modules.filter(module => {
+                const matchesSearch = module.name.toLowerCase().includes(searchTerm) || 
+                                    module.keywords.includes(searchTerm) ||
+                                    module.tools.some(tool => tool.toLowerCase().includes(searchTerm));
+                const matchesCategory = !category || module.category === category;
+                const matchesDifficulty = !difficulty || module.difficulty === difficulty;
+                const matchesDuration = !duration || module.duration.includes(duration.split('-')[0]);
+
+                return matchesSearch && matchesCategory && matchesDifficulty && matchesDuration;
+            });
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">> NO RESULTS FOUND. TRY DIFFERENT SEARCH TERMS.</div>';
+                return;
+            }
+
+            resultsContainer.innerHTML = results.map(module => `
+                <div class="search-result-item" onclick="showModule(${module.id})">
+                    <strong>${module.name}</strong><br>
+                    <small style="color: var(--matrix-dim);">Tools: ${module.tools.join(', ')}</small>
+                </div>
+            `).join('');
+        }
+
+        // Toggle sidebar for mobile
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.querySelector('.overlay');
@@ -1153,40 +1605,139 @@
             overlay.classList.toggle('active');
         }
 
-        // Module switching
-        function showModule(moduleId) {
-            // Hide all modules
-            document.querySelectorAll('.module-section').forEach(section => {
-                section.classList.remove('active');
-            });
+        // Show/hide views
+        function showView(view) {
+            const roadmapView = document.getElementById('roadmapView');
+            const moduleContent = document.getElementById('moduleContent');
             
-            // Show selected module
-            const targetModule = document.querySelector(`[data-module="${moduleId}"]`);
-            if (targetModule) {
-                targetModule.classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
+            if (view === 'roadmap') {
+                roadmapView.style.display = 'block';
+                moduleContent.style.display = 'none';
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
             }
+        }
+
+        // Show module content
+        function showModule(moduleId) {
+            const roadmapView = document.getElementById('roadmapView');
+            const moduleContent = document.getElementById('moduleContent');
+            
+            roadmapView.style.display = 'none';
+            moduleContent.style.display = 'block';
             
             // Update navigation
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-item')[moduleId - 1].classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.nav-item')[moduleId].classList.add('active');
+            
+            // Load module content
+            loadModuleContent(moduleId);
             
             // Close sidebar on mobile
             if (window.innerWidth <= 1024) {
                 toggleSidebar();
             }
             
-            // Scroll to top
             window.scrollTo(0, 0);
         }
 
-        // Open resource links
-        function openResource(url) {
-            window.open(url, '_blank');
+        // Load module content dynamically
+        function loadModuleContent(moduleId) {
+            const moduleContent = document.getElementById('moduleContent');
+            const modules = searchIndex.modules;
+            const module = modules[moduleId - 1];
+            
+            moduleContent.innerHTML = `
+                <div class="module-header">
+                    <div class="module-header-content">
+                        <div class="module-icon-large">${module.name.charAt(0)}</div>
+                        <div class="module-info">
+                            <h2>> ${module.name.toUpperCase()}</h2>
+                            <div class="module-meta">
+                                <span class="meta-item">⏱️ ${module.duration} weeks</span>
+                                <span class="meta-item">📊 ${module.difficulty}</span>
+                                <span class="meta-item">🏷️ ${module.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="completion-tracker">
+                    <h3>> MISSION OBJECTIVES</h3>
+                    <div class="completion-item">
+                        <input type="checkbox" class="completion-checkbox" data-module="${moduleId}" data-task="1">
+                        <label>Complete core concepts training</label>
+                    </div>
+                    <div class="completion-item">
+                        <input type="checkbox" class="completion-checkbox" data-module="${moduleId}" data-task="2">
+                        <label>Hands-on lab exercises</label>
+                    </div>
+                    <div class="completion-item">
+                        <input type="checkbox" class="completion-checkbox" data-module="${moduleId}" data-task="3">
+                        <label>Build practical project</label>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>> ESSENTIAL TOOLS & TECHNOLOGIES</h3>
+                    <div class="tools-grid">
+                        ${module.tools.map(tool => `
+                            <div class="tool-card">
+                                <div class="tool-icon">⚡</div>
+                                <div class="tool-name">${tool}</div>
+                                <div class="tool-category">${module.category}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>> TRAINING PROGRAM</h3>
+                    <ul>
+                        <li><strong>FOUNDATION:</strong> Core concepts and fundamentals</li>
+                        <li><strong>HANDS-ON:</strong> Practical labs and exercises</li>
+                        <li><strong>PROJECTS:</strong> Real-world implementations</li>
+                        <li><strong>CERTIFICATION:</strong> Industry-recognized credentials</li>
+                    </ul>
+
+                    <div class="checkpoint">
+                        <h4>> CHECKPOINT MISSION</h4>
+                        <p>Build a complete project using all learned tools and technologies. Document your implementation and deploy to production.</p>
+                    </div>
+                </div>
+
+                <div class="resources">
+                    <button class="resource-btn" onclick="alert('Opening training materials...')">
+                        📚 DOCUMENTATION
+                    </button>
+                    <button class="resource-btn" onclick="alert('Starting lab environment...')">
+                        🧪 LAB EXERCISES
+                    </button>
+                    <button class="resource-btn" onclick="alert('Loading video tutorials...')">
+                        🎥 VIDEO TRAINING
+                    </button>
+                    <button class="resource-btn" onclick="alert('Accessing community...')">
+                        💬 COMMUNITY
+                    </button>
+                </div>
+            `;
+
+            // Restore checkbox states
+            document.querySelectorAll('.completion-checkbox').forEach(checkbox => {
+                const module = checkbox.getAttribute('data-module');
+                const task = checkbox.getAttribute('data-task');
+                const key = `devops-module-${module}-task-${task}`;
+                checkbox.checked = localStorage.getItem(key) === 'true';
+                
+                checkbox.addEventListener('change', function() {
+                    localStorage.setItem(key, this.checked);
+                    updateProgress();
+                });
+            });
         }
 
-        // Progress tracking
+        // Update progress bar
         function updateProgress() {
             const checkboxes = document.querySelectorAll('.completion-checkbox');
             const total = checkboxes.length;
@@ -1194,37 +1745,20 @@
             const percentage = total > 0 ? Math.round((checked / total) * 100) : 0;
             
             document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = percentage + '% Complete (' + checked + '/' + total + ' tasks)';
+            document.getElementById('progressText').textContent = `SYSTEM INITIALIZATION: ${percentage}% (${checked}/${total} OBJECTIVES)`;
         }
 
-        // Save/load checkbox state
-        document.querySelectorAll('.completion-checkbox').forEach(checkbox => {
-            const module = checkbox.getAttribute('data-module');
-            const task = checkbox.getAttribute('data-task');
-            const key = `devops-module-${module}-task-${task}`;
-            
-            // Load saved state
-            const saved = localStorage.getItem(key);
-            if (saved === 'true') {
-                checkbox.checked = true;
-            }
-            
-            // Save on change
-            checkbox.addEventListener('change', function() {
-                localStorage.setItem(key, this.checked);
-                updateProgress();
-            });
-        });
-
-        // Initialize progress
-        updateProgress();
-
         // Handle window resize
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', () => {
             if (window.innerWidth > 1024) {
                 document.getElementById('sidebar').classList.remove('open');
                 document.querySelector('.overlay').classList.remove('active');
             }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
         });
     </script>
 </body>
